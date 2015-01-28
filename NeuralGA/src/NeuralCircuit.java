@@ -1,20 +1,26 @@
 //Ryan Carley 1/23/15
-import java.util.BitSet;
+//import java.util.BitSet;
 import java.util.Random;
 
 public class NeuralCircuit {
 	Neuron[] neurons;
+	int num;
 	int fitness;
 	boolean[] code;
 	int numNeurons;
+	Population pop;
+	int[] firesLog;
+	int maxFires = 4;
 	
 	NeuralCircuit(boolean[] circuitCode, int numPer){
 		
 	}
 	
-	NeuralCircuit(int neuronsPerCircuit) {
+	NeuralCircuit(int neuronsPerCircuit, Population p, int n) {
 		
 		this.numNeurons = neuronsPerCircuit;
+		this.pop = p;
+		this.num = n;
 		int codeLength = numNeurons * numNeurons;
 		
 		// Generate random circuit
@@ -29,6 +35,7 @@ public class NeuralCircuit {
 		}
 		 //code = fromString(bits);
 		neurons = new Neuron[numNeurons];
+		firesLog = new int[numNeurons];
 		this.code = c;
 		this.decode(code);
 	}
@@ -63,10 +70,68 @@ public class NeuralCircuit {
 	
 	public int fitnessTest(){
 		
+		boolean doneTesting = false;
+		boolean result = false;
+		
+		// Start Initial Input Fires
+		//boolean[] in = pop.getTestInput();
+		boolean[] in = new boolean[1];
+		in[0]=true;
+		for(int j = 0; j < in.length; j++){
+			if(in[j]){
+				neurons[j].fire();
+				//System.out.println("Initial fire on:" + j );
+			}
+		}
+		
+		while(!doneTesting){
+			
+			//System.out.println("Next Step.");
+			
+			boolean fired = false;
+			// Step through the fitness test
+			for(int i = 0; i < numNeurons; i++){
+				if(neurons[i].checkFire()){
+					fired = true;
+					firesLog[i]++;
+					if(firesLog[i] >= maxFires){
+						doneTesting = true;
+					}
+					
+					// Check if output fired
+					if(i == (numNeurons - 1)){
+						result = true;
+					}
+				}
+			}
+			
+			// If no neurons fired this step then end the test
+			if(!fired){
+				doneTesting = true;
+			}
+			/*try {
+			    Thread.sleep(1000);                 // 1000 milliseconds is one second.
+			} catch(InterruptedException ex) {
+			    Thread.currentThread().interrupt();
+			}*/
+			
+			
+		}
+		cleanFiresLog();
+		if(result){
+			return 1;
+		}
+		
 		return 0;
 	}
 	
-	private static BitSet fromString(final String s) {
+	public void cleanFiresLog(){
+		for(int i = 0; i < numNeurons; i++){
+			firesLog[i] = 0;
+		}
+	}
+	
+	/*private static BitSet fromString(final String s) {
         return BitSet.valueOf(new long[] { Long.parseLong(s, 2) });
-    }
+    }*/
 }

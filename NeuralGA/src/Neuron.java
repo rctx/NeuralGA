@@ -1,5 +1,5 @@
 //Ryan Carley 1/23/15
-import java.util.BitSet;
+//import java.util.BitSet;
 
 
 public class Neuron {
@@ -49,7 +49,6 @@ public class Neuron {
 		//boolean[] c = fromString(codeStr);
 		//code = c;
 		return code;
-		
 	}
 	
 	//Turn binary back into the neuron
@@ -76,14 +75,16 @@ public class Neuron {
 		
 		input[inNum] = 1;*/
 		input[in] = 1;
-		checkFire();
+		inputNum++;
+		//checkFire();
 	}
 	
-	public void checkFire(){
+	public boolean checkFire(){
 		
+		//System.out.println(" checkfire neuron:" + num + " for circuit:" + circuit.num);
 		// Gather total input value (weights?)
 		double runningTotal = 0;
-		for(int i = 0 ; i < input.length; i++){
+		for(int i = 0 ; i < totalNum; i++){
 			if(input[i] == 1){
 				// Later change this to account for weight
 				runningTotal += 1;
@@ -91,30 +92,45 @@ public class Neuron {
 		}
 		
 		// Values in this check may change
-		if(runningTotal >= (inputNum / 2)){
+		if(runningTotal >= (inputNum / 2) && runningTotal > 0){
 			this.fire();
+			return true;
 		}
+		return false;
 	}
 	
 	// Send activation signal to all output neurons
 	public void fire(){
 		
+		//System.out.print("Firing node:" + num + " with inputs:");
+		
 		// Wipe current inputs (action potential)
 		for(int i = 0; i < totalNum; i++){
+			if(input[i] != 0){
+				//System.out.print(i + ",");
+			}
 			input[i] = 0;
 		}
+		inputNum = 0;
+		//System.out.println();
 		
 		// Send output
+		//System.out.print("Sending output to nodes:");
 		for(int i = 0; i< output.length; i++){
 			if(output[i] == 1){
-				circuit.neurons[i].recieveInput(num);
+				if(num != i){
+					circuit.neurons[i].recieveInput(num);
+					//System.out.print(i + ",");
+				}
 			}
 		}
+		//System.out.println();
 		
 		// Final output if last Neuron in circuit
 		if(num == (totalNum - 1)){
-			System.out.println("finished. Last neuron activated!");
+			//System.out.println("finished. Last neuron activated!");
 		}
+		//System.out.println("Done firing node:" + num + "  for circuit:" + circuit.num + "!");
 	}
 	
 	
