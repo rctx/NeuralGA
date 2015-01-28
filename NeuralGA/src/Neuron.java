@@ -10,10 +10,11 @@ public class Neuron {
 	int[] inputWeights;
 	int[] input;
 	int[] output;
-	BitSet code;
+	//BitSet code;
+	boolean[] code;
 	NeuralCircuit circuit;
 	
-	Neuron(int index, int totalN, NeuralCircuit cir, BitSet c){
+	Neuron(int index, int totalN, NeuralCircuit cir, boolean[] c){
 		num = index;
 		totalNum = totalN; 
 		circuit = cir;
@@ -27,7 +28,7 @@ public class Neuron {
 	}
 	
 	// Turn connections, weights, and action potential formula etc into a binary string(or array?)
-	public BitSet encode(){
+	public boolean[] encode(){
 		String codeStr = "";
 		
 		if(code != null){
@@ -45,22 +46,22 @@ public class Neuron {
 		}
 		
 		// Temp, will need more variables later
-		BitSet c = fromString(codeStr);
-		code = c;
+		//boolean[] c = fromString(codeStr);
+		//code = c;
 		return code;
 		
 	}
 	
 	//Turn binary back into the neuron
-	public void decode(BitSet c){
+	public void decode(boolean[] c){
 		for(int i = 0; i < totalNum; i++){
-			/*if(c.get(i)){
+			if(c[i]){
 				output[i]=1;
 			}else{
 				output[i]=0;
-			}*/
+			}
 		}
-		System.out.println("want:" + totalNum + " from bitset of size:" + c.length());
+		//System.out.println("want:" + totalNum + " from boolean array of size:" + c.length);
 	}
 	
 	public void recieveInput(int in){
@@ -117,9 +118,9 @@ public class Neuron {
 	}
 	
 	
-	private static BitSet fromString(final String s) {
+	/*private static BitSet fromString(final String s) {
         return BitSet.valueOf(new long[] { Long.parseLong(s, 2) });
-    }
+    }*/
 
 	public void sendOutputs() {
 		for(int i= 0; i < totalNum; i++){

@@ -27,7 +27,7 @@ public class NeuralGA {
 			System.out.println("Circuit Number:" + i);
 			for(int j = 0; j < (numNeurons * numNeurons); j++){
 				//System.out.print(initialPop.circuits[i].code.get(j) + ",");
-				if(initialPop.circuits[i].code.get(j) == true){
+				if(initialPop.circuits[i].code[j] == true){
 					System.out.print("1");
 				}
 				else{

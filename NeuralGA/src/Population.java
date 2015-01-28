@@ -20,7 +20,7 @@ public class Population {
 		
 		
 		for(int i=0; i < popSize; i++){
-			BitSet cirCode = null;
+			boolean[] cirCode = null;
 			circuits[i] = new NeuralCircuit(cirCode, neuronsPerCircuit);
 		}
 	}
